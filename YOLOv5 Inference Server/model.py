@@ -9,6 +9,7 @@ import random
 import string
 import numpy as np
 import random
+from pathlib import Path
 
 def get_random_string(length):
     """
@@ -30,8 +31,8 @@ def load_model():
     """
     Load the model from the local directory
     """
-    #model = torch.hub.load('./', 'custom', path='YOLOv5_new.pt', source='local')
-    model = torch.hub.load('./', 'custom', path='Week_9.pt', source='local')
+    # model = torch.hub.load('./', 'custom', path='YOLOv5_new.pt', source='local')
+    model = torch.hub.load('./', 'custom', path='kassbest.pt', source='local')
     return model
 
 def draw_own_bbox(img,x1,y1,x2,y2,label,color=(36,255,12),text_color=(0,0,0)):
@@ -100,7 +101,7 @@ def draw_own_bbox(img,x1,y1,x2,y2,label,color=(36,255,12),text_color=(0,0,0)):
         "Stop": 40
     }
     # Reformat the label to {label name}-{label id}
-    label = label + "-" + str(name_to_id[label])
+    # label = label + "-" + str(name_to_id[label])
     # Convert the coordinates to int
     x1 = int(x1)
     x2 = int(x2)
@@ -141,8 +142,11 @@ def predict_image(image, model, signal):
     str - predicted label
     """
     try:
+        # DATA_DIR = Path("./data")
+        # img_file_path = str(DATA_DIR/image)+ ".jpg"
+        # print(img_file_path)
         # Load the image
-        img = Image.open(os.path.join('uploads', image))
+        img = Image.open(image)
 
         # Predict the image using the model
         results = model(img)
@@ -226,7 +230,7 @@ def predict_image(image, model, signal):
 
         name_to_id = {
             "NA": 'NA',
-            "Bullseye": 10,
+            "Bullseye": 99,
             "One": 11,
             "Two": 12,
             "Three": 13,
@@ -264,7 +268,7 @@ def predict_image(image, model, signal):
         }
         # If pred is not a string, i.e. a prediction was made and pred is not 'NA'
         if not isinstance(pred,str):
-            image_id = str(name_to_id[pred['name']])
+            image_id = str(pred['name'])
         else:
             image_id = 'NA'
         print(f"Final result: {image_id}")
@@ -315,7 +319,7 @@ def predict_image_week_9(image, model):
     }
     # Return the image id
     if not isinstance(pred,str):
-        image_id = str(name_to_id[pred['name']])
+        image_id = str(pred['name'])
     else:
         image_id = 'NA'
     return image_id
