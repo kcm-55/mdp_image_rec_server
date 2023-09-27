@@ -2,7 +2,7 @@ import time
 from flask import Flask, request, jsonify
 from capture import capture
 from flask_cors import CORS
-from model2 import *
+from model import *
 
 app = Flask(__name__)
 CORS(app)
